@@ -1,0 +1,24 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: LAB13_USER ON WS35 <L13Y17W35@LabHCI.net>
+#
+# On branch main
+#
+# Initial commit
+#
+# Changes to be committed:
+#	new file:   backend/aquahaven/.gitattributes
+#	new file:   backend/aquahaven/.gitignore
+#	new file:   backend/aquahaven/.mvn/wrapper/maven-wrapper.properties
+#	new file:   backend/aquahaven/mvnw
+#	new file:   backend/aquahaven/mvnw.cmd
+#	new file:   backend/aquahaven/pom.xml
+#	new file:   backend/aquahaven/src/main/java/edu/cit/poliquit/aquahaven/AquaHavenApplication.java
+#	new file:   backend/aquahaven/src/main/resources/application.properties
+#	new file:   backend/aquahaven/src/test/java/edu/cit/poliquit/aquahaven/AquaHavenApplicationTests.java
+#
+# Untracked files:
+#	.idea/
+#
