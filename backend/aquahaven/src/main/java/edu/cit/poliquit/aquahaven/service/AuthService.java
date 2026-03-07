@@ -1,63 +1,68 @@
 package edu.cit.poliquit.aquahaven.service;
 
-import edu.cit.poliquit.aquahaven.dto.*;
+import edu.cit.poliquit.aquahaven.config.JwtUtil;
+import edu.cit.poliquit.aquahaven.dto.AuthResponse;
+import edu.cit.poliquit.aquahaven.dto.LoginRequest;
+import edu.cit.poliquit.aquahaven.dto.RegisterRequest;
 import edu.cit.poliquit.aquahaven.entity.User;
 import edu.cit.poliquit.aquahaven.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final JwtUtil jwtUtil;
+
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+    }
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            return new AuthResponse(false, null, "Email already registered");
+            return AuthResponse.fail("DB-002", "Email already registered", null);
         }
 
         User user = new User();
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("CUSTOMER");
+
         userRepository.save(user);
 
-        String token = jwtService.generateToken(user.getEmail());
+        String accessToken = jwtUtil.generateToken(user.getEmail());
+        String refreshToken = jwtUtil.generateToken(user.getEmail()); // same for demo
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("email", user.getEmail());
-        data.put("firstname", user.getFirstname());
-        data.put("lastname", user.getLastname());
-        data.put("accessToken", token);
+        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
+                user.getEmail(), user.getFirstname(), user.getLastname(), user.getRole()
+        );
 
-        return new AuthResponse(true, data, null);
+        return AuthResponse.ok(userInfo, accessToken, refreshToken);
     }
 
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElse(null);
+        User user = userRepository.findByEmail(request.getEmail()).orElse(null);
 
         if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return new AuthResponse(false, null, "Invalid email or password");
+            return AuthResponse.fail("AUTH-001", "Invalid credentials", null);
         }
 
-        String token = jwtService.generateToken(user.getEmail());
+        String accessToken = jwtUtil.generateToken(user.getEmail());
+        String refreshToken = jwtUtil.generateToken(user.getEmail());
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("email", user.getEmail());
-        data.put("firstname", user.getFirstname());
-        data.put("lastname", user.getLastname());
-        data.put("role", user.getRole());
-        data.put("accessToken", token);
+        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
+                user.getEmail(), user.getFirstname(), user.getLastname(), user.getRole()
+        );
 
-        return new AuthResponse(true, data, null);
+        return AuthResponse.ok(userInfo, accessToken, refreshToken);
     }
 }

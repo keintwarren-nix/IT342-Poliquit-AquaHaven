@@ -1,0 +1,255 @@
+/* Auth.css - Matches AquaHaven design from screenshots */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+/* Aquatic fish background — same as your screenshots */
+.auth-bg {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1534043464124-3be32fe000c9?w=1400&q=80') center/cover no-repeat;
+  opacity: 0.85;
+}
+
+.register-bg {
+  background: url('https://images.unsplash.com/photo-1611247055092-dd7a29a7a3bd?w=1400&q=80') center/cover no-repeat;
+}
+
+/* Floating card - left-aligned like screenshots */
+.auth-card {
+  position: relative;
+  z-index: 10;
+  background: rgba(248, 246, 240, 0.97);
+  border-radius: 4px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+  margin-left: 4rem;
+}
+
+.register-card {
+  max-width: 360px;
+  padding: 2rem 1.75rem;
+}
+
+.auth-brand {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.auth-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  margin: 0 0 0.4rem 0;
+  line-height: 1.2;
+}
+
+.auth-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: #666;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.auth-divider-line {
+  height: 2px;
+  background: linear-gradient(to right, #c8b84a, #e8d875, transparent);
+  margin-bottom: 1.25rem;
+}
+
+/* Form fields */
+.auth-field {
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.auth-field label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #555;
+  margin-bottom: 0.3rem;
+}
+
+.auth-field input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: #fafafa;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: #1a1a1a;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.auth-field input:focus {
+  border-color: #1a1a1a;
+  background: #fff;
+}
+
+.auth-hint {
+  font-size: 0.65rem;
+  color: #888;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.auth-forgot {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: #4a7c3f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-forgot:hover {
+  text-decoration: underline;
+}
+
+/* Two-column row for first/last name */
+.auth-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Submit button */
+.auth-btn {
+  width: 100%;
+  padding: 0.7rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: 0.02em;
+}
+
+.auth-btn:hover:not(:disabled) {
+  background: #333;
+}
+
+.auth-btn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+}
+
+.auth-divider span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: #999;
+}
+
+/* Checkbox */
+.auth-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #555;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.auth-checkbox input[type='checkbox'] {
+  margin-top: 2px;
+  accent-color: #1a1a1a;
+  flex-shrink: 0;
+}
+
+/* Links */
+.auth-link {
+  color: #4a7c3f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Switch line */
+.auth-switch {
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+/* Error */
+.auth-error {
+  background: #fff0f0;
+  border: 1px solid #ffcdd2;
+  border-radius: 3px;
+  padding: 0.5rem 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #c62828;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .auth-card {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .auth-page {
+    justify-content: center;
+    padding: 1rem;
+  }
+}
