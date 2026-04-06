@@ -18,14 +18,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const stored = sessionStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  });
+  const [token, setToken] = useState<string | null>(() =>
+    sessionStorage.getItem("accessToken")
+  );
 
   const login = (userData: User, accessToken: string, refreshToken: string) => {
     setUser(userData);
     setToken(accessToken);
-    // Store in memory only (no localStorage per security best practice)
-    // For persistence across refresh, you can use sessionStorage
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("refreshToken", refreshToken);
     sessionStorage.setItem("user", JSON.stringify(userData));

@@ -1,42 +1,83 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Container for the checkbox */
+.auth-checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  cursor: pointer;
+  margin: 1.5rem 0;
+  user-select: none;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Hide the default checkbox */
+.auth-checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Create a custom checkbox */
+.checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: #fff;
+  border: 1.5px solid #d1d1d1;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Hover and Checked states */
+.auth-checkbox-container:hover input ~ .checkmark {
+  border-color: #4a7c3f;
 }
 
-.card {
-  padding: 2em;
+.auth-checkbox-container input:checked ~ .checkmark {
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
 }
 
-.read-the-docs {
-  color: #888;
+/* Create the checkmark indicator */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.auth-checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark (L-shape) */
+.auth-checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Text and Links styling */
+.auth-checkbox-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.auth-link {
+  color: #4a7c3f;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #355a2d;
+  text-decoration: underline;
 }
