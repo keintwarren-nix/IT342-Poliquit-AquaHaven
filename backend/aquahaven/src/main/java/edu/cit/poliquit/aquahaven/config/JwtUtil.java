@@ -3,8 +3,8 @@ package edu.cit.poliquit.aquahaven.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -13,13 +13,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // Use a base64-encoded key
-    private final String secret = "VGhpcyBpcyBhIHZlcnkgc2VjdXJlIHNlY3JldCBrZXkgZm9yIEpXVCBzaWduaW5n";
-    private final long expiration = 1000 * 60 * 60; // 1 hour
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long expiration;
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(String email) {
@@ -46,12 +47,12 @@ public class JwtUtil {
 
     public String extractEmail(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
-                    .getBody();
-            return claims.getSubject();
+                    .getBody()
+                    .getSubject();
         } catch (Exception e) {
             return null;
         }

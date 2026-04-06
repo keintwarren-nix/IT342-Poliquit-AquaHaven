@@ -2,32 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/Homepage";
 
-// Placeholder homepage - replace with your actual homepage later
-function HomePage() {
-  const { user, logout } = useAuth();
-  return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>Welcome, {user?.firstname}!</h1>
-      <p>You are logged in as <strong>{user?.role}</strong></p>
-      <button
-        onClick={logout}
-        style={{
-          padding: "0.5rem 1.5rem",
-          background: "#1a1a1a",
-          color: "#fff",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
-        Logout
-      </button>
-    </div>
-  );
-}
-
-// Protected route wrapper
+// Protected route wrapper to prevent unauthorized access
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -46,7 +23,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      {/* Catch-all */}
+      {/* Redirect any unknown routes to home/login */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
