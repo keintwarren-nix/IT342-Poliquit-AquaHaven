@@ -2,6 +2,11 @@ package edu.cit.poliquit.aquahaven.dto;
 
 import java.time.Instant;
 
+/**
+ * DESIGN PATTERN - CREATIONAL
+ * Pattern: Factory Method
+ * Purpose: Encapsulates object creation and provides static factory methods for success/failure responses.
+ */
 public class AuthResponse {
 
     private boolean success;
@@ -9,10 +14,12 @@ public class AuthResponse {
     private ErrorInfo error;
     private String timestamp;
 
-    public AuthResponse() {
+    // Private constructor to enforce factory method usage
+    private AuthResponse() {
         this.timestamp = Instant.now().toString();
     }
 
+    // Factory method for successful authentication
     public static AuthResponse ok(UserInfo user, String accessToken, String refreshToken) {
         AuthResponse r = new AuthResponse();
         r.success = true;
@@ -21,6 +28,7 @@ public class AuthResponse {
         return r;
     }
 
+    // Factory method for failed authentication
     public static AuthResponse fail(String code, String message, Object details) {
         AuthResponse r = new AuthResponse();
         r.success = false;
@@ -29,11 +37,13 @@ public class AuthResponse {
         return r;
     }
 
+    // Getters
     public boolean isSuccess() { return success; }
     public Data getData() { return data; }
     public ErrorInfo getError() { return error; }
     public String getTimestamp() { return timestamp; }
 
+    /** Nested class representing successful data payload */
     public static class Data {
         private UserInfo user;
         private String accessToken;
@@ -50,6 +60,7 @@ public class AuthResponse {
         public String getRefreshToken() { return refreshToken; }
     }
 
+    /** Nested class representing user information */
     public static class UserInfo {
         private String email;
         private String firstname;
@@ -69,6 +80,7 @@ public class AuthResponse {
         public String getRole() { return role; }
     }
 
+    /** Nested class representing error information */
     public static class ErrorInfo {
         private String code;
         private String message;
