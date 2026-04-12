@@ -1,31 +1,175 @@
 .home-page {
-  min-height: 100vh;
-  width: 100%;
-  background-image: url("../assets/bg_aqua3.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  margin-top: 58px;
+  font-family: 'DM Sans', sans-serif;
+  background: #F5F2ED;
+}
 
+/* ── Hero: full-bleed image with dark overlay ─────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 520px;
+  background: #1C2B22 url('../assets/bg_aqua.jpg') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 80px; /* space for navbar */
+  text-align: center;
+  overflow: hidden;
 }
 
-/* Optional dark overlay for readability */
-.home-page::after {
-  content: "";
+.hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(28,43,34,0.72) 0%,
+    rgba(28,43,34,0.55) 50%,
+    rgba(28,43,34,0.78) 100%
+  );
 }
 
-/* Content above overlay */
-.home-content {
+.hero-content {
   position: relative;
   z-index: 1;
-  color: white;
-  text-align: center;
+  max-width: 640px;
+  padding: 3rem 2rem;
+}
+
+.hero-content h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: #F0EDE8;
+  margin: 0 0 1rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.hero-content p {
+  color: rgba(240,237,232,0.8);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 2rem;
+}
+
+.hero-content a,
+.hero-content button {
+  display: inline-block;
+  background: #F0EDE8;
+  color: #1C2B22;
+  text-decoration: none;
   font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.85rem 2.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.hero-content a:hover,
+.hero-content button:hover {
+  background: #fff;
+  color: #1C2B22;
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────── */
+.home-section {
+  padding: 3.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.home-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.7rem;
+  color: #1C2B22;
+  margin: 0 0 1.5rem;
+}
+
+.home-section p {
+  color: #4A5248;
+}
+
+/* ── Category grid ────────────────────────────────────────────────────── */
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.category-grid button {
+  background: #FDFAF6;
+  border: 1.5px solid #E2DDD6;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1C2B22;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.category-grid button:hover {
+  background: #3D7A56;
+  border-color: #3D7A56;
+  color: #F0EDE8;
+}
+
+/* ── Product grid ─────────────────────────────────────────────────────── */
+.home-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ── Dark section ─────────────────────────────────────────────────────── */
+.home-section--dark {
+  background: #1C2B22;
+  max-width: 100%;
+  padding: 3.5rem 2rem;
+}
+
+.home-section--dark h2 { color: #F0EDE8; }
+.home-section--dark p  { color: rgba(240,237,232,0.7); }
+
+/* ── Footer CTA ───────────────────────────────────────────────────────── */
+.home-footer-cta {
+  position: relative;
+  background: #1C2B22 url('../assets/bg_aqua2.jpg') center/cover no-repeat;
+  padding: 5rem 2rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.home-footer-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(28,43,34,0.65);
+}
+
+.home-footer-cta h2 {
+  position: relative;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  color: #F0EDE8;
+  margin: 0 0 1.5rem;
+}
+
+.home-footer-cta a {
+  position: relative;
+  display: inline-block;
+  background: #F0EDE8;
+  color: #1C2B22;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.85rem 2.2rem;
+  border-radius: 8px;
+  transition: background 0.18s;
+}
+
+.home-footer-cta a:hover {
+  background: #fff;
 }
