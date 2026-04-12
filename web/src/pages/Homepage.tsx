@@ -1,41 +1,96 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
 import { useAuth } from "../context/AuthContext";
+import { fetchCategories, fetchProducts } from "../services/productService";
+import type { Category, Product } from "../services/productService";
 import "./HomePage.css";
 
 export default function HomePage() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+  const [loadingProds, setLoadingProds] = useState(true);
+
+  useEffect(() => {
+    document.title = "AquaHaven | Home";
+  }, []);
+
+  useEffect(() => {
+    fetchCategories()
+      .then((data) => setCategories(data ?? []))
+      .catch(() => setCategories([]))
+      .finally(() => setLoadingCats(false));
+  }, []);
+
+  useEffect(() => {
+    fetchProducts({ sortBy: "createdAt", sortDir: "desc", size: 4 })
+      .then((res) => setNewArrivals(res?.content ?? []))
+      .catch(() => setNewArrivals([]))
+      .finally(() => setLoadingProds(false));
+  }, []);
+
+  const handleCategoryClick = (slug: string) => {
+    navigate(`/products?category=${slug}`);
+  };
 
   return (
     <>
       <Navbar />
+      <main className="home-page">
+        <section className="hero">
+          <div className="hero-overlay" />
+          <div className="hero-content">
+            {user ? (
+              <>
+                <h1>Hello, {user.firstname} 👋</h1>
+                <Link to="/products">Browse Products</Link>
+              </>
+            ) : (
+              <>
+                <h1>Your Aquatic World Starts Here</h1>
+                <Link to="/register">Get Started</Link>
+              </>
+            )}
+          </div>
+        </section>
 
-      <div className="home-page">
-        <div className="home-content">
-          <h1>Welcome, {user?.firstname}!</h1>
-          <p>Your aquatic journey starts here.</p>
+        <section className="home-section">
+          <h2>Categories</h2>
+          {loadingCats ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="category-grid">
+              {categories.map((cat) => (
+                <button key={cat.slug} onClick={() => handleCategoryClick(cat.slug)}>
+                  {cat.icon} {cat.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
 
-          <button
-            onClick={logout}
-            style={{
-              marginTop: "2rem",
-              padding: "0.8rem 2.5rem",
-              background: "#1a1a1a",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.9rem",
-              fontWeight: 500,
-              transition: "opacity 0.2s ease"
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.opacity = "0.8")}
-            onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+        <section className="home-section">
+          <h2>New Arrivals</h2>
+          {loadingProds ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="home-product-grid">
+              {newArrivals.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  onClick={() => navigate("/products")}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
     </>
   );
 }

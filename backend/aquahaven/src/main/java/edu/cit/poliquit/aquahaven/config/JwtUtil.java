@@ -19,7 +19,7 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    private Key getSigningKey() {
+    private Key key() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
@@ -28,18 +28,20 @@ public class JwtUtil {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean isTokenValid(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+                    .setSigningKey(key())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+
             return claims.getExpiration().after(new Date());
+
         } catch (Exception e) {
             return false;
         }
@@ -48,7 +50,7 @@ public class JwtUtil {
     public String extractEmail(String token) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+                    .setSigningKey(key())
                     .build()
                     .parseClaimsJws(token)
                     .getBody()

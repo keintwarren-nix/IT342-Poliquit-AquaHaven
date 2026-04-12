@@ -9,14 +9,7 @@ import edu.cit.poliquit.aquahaven.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- * DESIGN PATTERN - STRUCTURAL
- * Pattern: Facade
- * Purpose: Provides a simplified interface to multiple authentication subsystems:
- *          - User repository
- *          - Password encoder
- *          - JWT token generation
- */
+
 @Service
 public class AuthService {
 
@@ -32,7 +25,6 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    /** Register a new user and return a structured AuthResponse */
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             return AuthResponse.fail("DB-002", "Email already registered", null);
@@ -49,7 +41,7 @@ public class AuthService {
         userRepository.save(user);
 
         String accessToken = jwtUtil.generateToken(user.getEmail());
-        String refreshToken = jwtUtil.generateToken(user.getEmail()); // demo only
+        String refreshToken = jwtUtil.generateToken(user.getEmail()); // same for demo
 
         AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
                 user.getEmail(), user.getFirstname(), user.getLastname(), user.getRole()
@@ -58,7 +50,6 @@ public class AuthService {
         return AuthResponse.ok(userInfo, accessToken, refreshToken);
     }
 
-    /** Authenticate user credentials and return a structured AuthResponse */
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElse(null);
 

@@ -2,11 +2,7 @@ package edu.cit.poliquit.aquahaven.dto;
 
 import java.time.Instant;
 
-/**
- * DESIGN PATTERN - CREATIONAL
- * Pattern: Factory Method
- * Purpose: Encapsulates object creation and provides static factory methods for success/failure responses.
- */
+
 public class AuthResponse {
 
     private boolean success;
