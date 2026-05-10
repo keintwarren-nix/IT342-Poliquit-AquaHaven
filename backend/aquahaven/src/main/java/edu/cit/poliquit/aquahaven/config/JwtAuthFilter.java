@@ -1,6 +1,6 @@
 package edu.cit.poliquit.aquahaven.config;
 
-import edu.cit.poliquit.aquahaven.service.CustomUserDetailsService;
+import edu.cit.poliquit.aquahaven.user.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,11 +17,11 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
+    private final JwtUtil                  jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
     public JwtAuthFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
-        this.jwtUtil = jwtUtil;
+        this.jwtUtil            = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
 
@@ -33,7 +33,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        // Public routes — bypass JWT check entirely
         if (path.startsWith("/api/v1/products")
                 || path.startsWith("/api/v1/categories")
                 || path.startsWith("/api/v1/auth")) {
@@ -63,18 +62,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
+                                userDetails, null, userDetails.getAuthorities()
                         );
-
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
         } catch (Exception e) {
-            // If anything goes wrong with JWT processing, continue unauthenticated.
-            // Spring Security's AuthorizationFilter will handle 401/403 as appropriate.
             SecurityContextHolder.clearContext();
         }
 
