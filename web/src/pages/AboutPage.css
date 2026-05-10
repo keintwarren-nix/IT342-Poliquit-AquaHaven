@@ -1,5 +1,5 @@
 .about-page {
-  margin-top: 58px;
+  margin-top: var(--navbar-h);
   background: #F5F2ED;
   font-family: 'DM Sans', sans-serif;
 }

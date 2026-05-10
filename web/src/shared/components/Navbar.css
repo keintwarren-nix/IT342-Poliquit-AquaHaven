@@ -1,0 +1,248 @@
+/* src/shared/components/Navbar.css */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 82px; /* taller navbar */
+  background: #1c2b22;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.navbar__inner {
+  max-width: 1500px; /* wider */
+  margin: 0 auto;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 1rem; /* closer to edges */
+  gap: 1rem;
+}
+
+/* ===== BRAND / LOGO ===== */
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #f0ede8;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.navbar__brand:hover {
+  color: #6baf87;
+}
+
+/* LOGO CONTAINER */
+.navbar__logo {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  /* white base for transparent PNG */
+  background: white;
+  border: 2px solid #d8d8d8;
+  border-radius: 14px;
+
+  padding: 6px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== NAV LINKS ===== */
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+  padding-left: 2rem;
+}
+
+.navbar__link {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(240, 237, 232, 0.85);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.navbar__link:hover {
+  color: #f0ede8;
+}
+
+/* ===== RIGHT ACTIONS ===== */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* ===== CART ===== */
+.navbar__cart-btn {
+  position: relative;
+  font-size: 1.6rem;
+  color: #f0ede8;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  transition: transform 0.15s ease;
+}
+
+.navbar__cart-btn:hover {
+  transform: scale(1.08);
+}
+
+.navbar__cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: #3d7a56;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "DM Sans", sans-serif;
+}
+
+/* ===== AUTH ===== */
+.navbar__auth {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.navbar__btn {
+  background: #3d7a56;
+  color: #f0ede8;
+  text-decoration: none;
+
+  padding: 0.6rem 1.2rem;
+  border-radius: 9px;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  transition: background 0.18s ease;
+}
+
+.navbar__btn:hover {
+  background: #336648;
+}
+
+/* ===== USER MENU ===== */
+.navbar__user-menu {
+  position: relative;
+}
+
+.navbar__user-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f0ede8;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.navbar__user-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.navbar__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  background: #fdfaf6;
+  border: 1px solid #e2ddd6;
+  border-radius: 12px;
+  min-width: 180px;
+
+  box-shadow: 0 8px 24px rgba(28, 43, 34, 0.18);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.navbar__dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1rem;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+
+  color: #1c2b22;
+  text-decoration: none;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.navbar__dropdown-item:hover {
+  background: #ebe7e0;
+}
+
+.navbar__dropdown-item--logout {
+  color: #b91c1c;
+  border-top: 1px solid #e2ddd6;
+}
+
+.navbar__dropdown-item--logout:hover {
+  background: #fef2f2;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .navbar {
+    height: 74px;
+  }
+
+  .navbar__links {
+    display: none;
+  }
+
+  .navbar__inner {
+    padding: 0 0.75rem;
+  }
+
+  .navbar__brand {
+    font-size: 1.1rem;
+  }
+
+  .navbar__logo {
+    width: 48px;
+    height: 48px;
+  }
+}

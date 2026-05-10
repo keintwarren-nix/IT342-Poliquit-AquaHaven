@@ -39,9 +39,7 @@ public class JwtUtil {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-
             return claims.getExpiration().after(new Date());
-
         } catch (Exception e) {
             return false;
         }
