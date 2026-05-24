@@ -2,14 +2,13 @@ package edu.cit.poliquit.aquahaven
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import edu.cit.poliquit.aquahaven.model.RegisterRequest
 import edu.cit.poliquit.aquahaven.network.RetrofitClient
-import kotlinx.coroutines.delay
+import edu.cit.poliquit.aquahaven.utils.SessionManager
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
@@ -26,6 +25,7 @@ class RegisterActivity : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val tvMessage   = findViewById<TextView>(R.id.tvMessage)
         val tvGoLogin   = findViewById<TextView>(R.id.tvGoLogin)
+        val progress    = findViewById<View>(R.id.progressBar)
 
         btnRegister.setOnClickListener {
             val firstname = etFirstname.text.toString().trim()
@@ -34,35 +34,61 @@ class RegisterActivity : AppCompatActivity() {
             val phone     = etPhone.text.toString().trim()
             val password  = etPassword.text.toString().trim()
 
-            if (firstname.isEmpty() || lastname.isEmpty() ||
-                email.isEmpty() || password.isEmpty()) {
-                tvMessage.text = "Please fill in all required fields"
+            if (firstname.isEmpty() || lastname.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                showError(tvMessage, "Please fill in all required fields")
                 return@setOnClickListener
             }
+
+            if (password.length < 8) {
+                showError(tvMessage, "Password must be at least 8 characters")
+                return@setOnClickListener
+            }
+
+            btnRegister.isEnabled = false
+            progress.visibility = View.VISIBLE
+            tvMessage.text = ""
 
             lifecycleScope.launch {
                 try {
                     val response = RetrofitClient.instance.register(
                         RegisterRequest(firstname, lastname, email, password, phone)
                     )
-                    if (response.isSuccessful && response.body()?.success == true) {
-                        tvMessage.text = "✅ Registration successful!"
-                        delay(1500)
-                        startActivity(Intent(
-                            this@RegisterActivity, LoginActivity::class.java))
-                        finish()
+                    val body = response.body()
+
+                    if (response.isSuccessful && body?.success == true) {
+                        val token = body.accessToken
+                        val user  = body.user
+
+                        if (!token.isNullOrBlank() && user != null) {
+                            SessionManager.save(this@RegisterActivity, token, user)
+                            startActivity(Intent(this@RegisterActivity, MainActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            })
+                            finish()
+                        } else {
+                            showError(tvMessage, body.message ?: "Registration failed. Please try again.")
+                        }
                     } else {
-                        val error = response.body()?.error?.message
-                        tvMessage.text = "❌ ${error ?: "Registration failed"}"
+                        showError(tvMessage, "❌ ${body?.message ?: "Registration failed"}")
                     }
+
                 } catch (e: Exception) {
-                    tvMessage.text = "❌ Cannot connect to server"
+                    showError(tvMessage, "❌ Cannot connect to server. Check your connection.")
+                } finally {
+                    btnRegister.isEnabled = true
+                    progress.visibility = View.GONE
                 }
             }
         }
 
         tvGoLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
+    }
+
+    private fun showError(tv: TextView, msg: String) {
+        tv.text = msg
+        tv.setTextColor(0xFFB91C1C.toInt())
     }
 }

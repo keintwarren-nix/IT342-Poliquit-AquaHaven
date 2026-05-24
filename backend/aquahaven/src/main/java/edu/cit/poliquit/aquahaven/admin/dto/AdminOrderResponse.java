@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Extended OrderResponse for admin views — includes user details.
- */
 public class AdminOrderResponse {
 
     private Long               id;
@@ -24,7 +21,6 @@ public class AdminOrderResponse {
     private LocalDateTime      updatedAt;
     private List<ItemResponse> items;
 
-    // User info
     private String userFullName;
     private String userEmail;
 
@@ -42,8 +38,8 @@ public class AdminOrderResponse {
         r.createdAt       = order.getCreatedAt();
         r.updatedAt       = order.getUpdatedAt();
         r.items           = order.getItems().stream()
-                .map(ItemResponse::from)
-                .collect(Collectors.toList());
+                                 .map(ItemResponse::from)
+                                 .collect(Collectors.toList());
         if (order.getUser() != null) {
             r.userFullName = order.getUser().getFirstname() + " " + order.getUser().getLastname();
             r.userEmail    = order.getUser().getEmail();
@@ -89,40 +85,4 @@ public class AdminOrderResponse {
         public BigDecimal getUnitPrice()   { return unitPrice; }
         public BigDecimal getSubtotal()    { return subtotal; }
     }
-}package edu.cit.poliquit.aquahaven.admin.dto;
-
-import edu.cit.poliquit.aquahaven.user.entity.User;
-import java.time.LocalDateTime;
-
-public class AdminUserResponse {
-
-    private Long          id;
-    private String        firstname;
-    private String        lastname;
-    private String        email;
-    private String        phone;
-    private String        role;
-    private LocalDateTime createdAt;
-
-    private AdminUserResponse() {}
-
-    public static AdminUserResponse from(User user) {
-        AdminUserResponse r = new AdminUserResponse();
-        r.id        = user.getId();
-        r.firstname = user.getFirstname();
-        r.lastname  = user.getLastname();
-        r.email     = user.getEmail();
-        r.phone     = user.getPhone();
-        r.role      = user.getRole();
-        r.createdAt = user.getCreatedAt();
-        return r;
-    }
-
-    public Long          getId()        { return id; }
-    public String        getFirstname() { return firstname; }
-    public String        getLastname()  { return lastname; }
-    public String        getEmail()     { return email; }
-    public String        getPhone()     { return phone; }
-    public String        getRole()      { return role; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
 }

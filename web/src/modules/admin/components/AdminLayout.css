@@ -176,6 +176,21 @@
   overflow: hidden;
 }
 
+.adm-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #E2DDD6;
+}
+
+.adm-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1C2B22;
+  margin: 0;
+}
+
 /* ── Table ────────────────────────────────────────────────────────────────── */
 .adm-table-wrap { overflow-x: auto; }
 

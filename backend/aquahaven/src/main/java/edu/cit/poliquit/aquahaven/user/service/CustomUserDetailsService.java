@@ -19,6 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    private String getSpringSecurityRole(String role) {
+        if (role == null) return "ROLE_CUSTOMER";
+        return role.startsWith("ROLE_") ? role : "ROLE_" + role;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
@@ -27,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+                List.of(new SimpleGrantedAuthority(getSpringSecurityRole(user.getRole())))
         );
     }
 }

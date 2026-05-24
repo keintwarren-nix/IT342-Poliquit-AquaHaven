@@ -1,6 +1,7 @@
 package edu.cit.poliquit.aquahaven.auth.service;
 
 import edu.cit.poliquit.aquahaven.auth.dto.request.LoginRequest;
+import edu.cit.poliquit.aquahaven.auth.dto.request.RefreshTokenRequest;
 import edu.cit.poliquit.aquahaven.auth.dto.request.RegisterRequest;
 import edu.cit.poliquit.aquahaven.auth.dto.response.AuthResponse;
 import edu.cit.poliquit.aquahaven.config.JwtUtil;
@@ -24,6 +25,11 @@ public class AuthService {
         this.jwtUtil         = jwtUtil;
     }
 
+    private String formatRole(String role) {
+        if (role == null) return "CUSTOMER";
+        return role.startsWith("ROLE_") ? role.substring(5) : role;
+    }
+
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             return AuthResponse.fail("DB-002", "Email already registered", null);
@@ -39,11 +45,11 @@ public class AuthService {
 
         userRepository.save(user);
 
-        String accessToken  = jwtUtil.generateToken(user.getEmail());
-        String refreshToken = jwtUtil.generateToken(user.getEmail());
+        String accessToken  = jwtUtil.generateAccessToken(user.getEmail());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
 
         AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
-                user.getEmail(), user.getFirstname(), user.getLastname(), user.getRole()
+                user.getEmail(), user.getFirstname(), user.getLastname(), formatRole(user.getRole())
         );
 
         return AuthResponse.ok(userInfo, accessToken, refreshToken);
@@ -56,13 +62,38 @@ public class AuthService {
             return AuthResponse.fail("AUTH-001", "Invalid credentials", null);
         }
 
-        String accessToken  = jwtUtil.generateToken(user.getEmail());
-        String refreshToken = jwtUtil.generateToken(user.getEmail());
+        String accessToken  = jwtUtil.generateAccessToken(user.getEmail());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
 
         AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
-                user.getEmail(), user.getFirstname(), user.getLastname(), user.getRole()
+                user.getEmail(), user.getFirstname(), user.getLastname(), formatRole(user.getRole())
         );
 
         return AuthResponse.ok(userInfo, accessToken, refreshToken);
+    }
+
+    public AuthResponse refresh(RefreshTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
+        if (refreshToken == null || !jwtUtil.isTokenValid(refreshToken)) {
+            return AuthResponse.fail("AUTH-002", "Invalid or expired refresh token", null);
+        }
+
+        String email = jwtUtil.extractEmail(refreshToken);
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            return AuthResponse.fail("AUTH-003", "User not found", null);
+        }
+
+        String newAccessToken = jwtUtil.generateAccessToken(email);
+        String newRefreshToken = jwtUtil.generateRefreshToken(email);
+
+        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
+                user.getEmail(), user.getFirstname(), user.getLastname(), formatRole(user.getRole())
+        );
+
+        return AuthResponse.ok(userInfo, newAccessToken, newRefreshToken);
+    }
+
+    public void logout() {
     }
 }

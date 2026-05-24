@@ -37,6 +37,10 @@ export default function Navbar() {
           <Link to="/about" className="navbar__link">
             About
           </Link>
+
+          <Link to="/contact" className="navbar__link">
+            Contact
+          </Link>
         </div>
 
         <div className="navbar__actions">
@@ -67,12 +71,28 @@ export default function Navbar() {
               {menuOpen && (
                 <div className="navbar__dropdown">
                   <Link
+                    to="/profile"
+                    className="navbar__dropdown-item"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    👤 My Profile
+                  </Link>
+                  <Link
                     to="/orders"
                     className="navbar__dropdown-item"
                     onClick={() => setMenuOpen(false)}
                   >
                     📋 My Orders
                   </Link>
+                  {user.role === "ADMIN" && (
+                    <Link
+                      to="/admin"
+                      className="navbar__dropdown-item"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      ⚙️ Admin Panel
+                    </Link>
+                  )}
 
                   <button
                     className="navbar__dropdown-item navbar__dropdown-item--logout"
