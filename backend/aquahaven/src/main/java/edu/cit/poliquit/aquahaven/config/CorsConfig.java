@@ -15,7 +15,9 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173", "https://*.onrender.com"));
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://aquahaven-web.onrender.com");
+        config.addAllowedOriginPattern("https://*.onrender.com");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
 
