@@ -7,6 +7,8 @@ import org.springframework.core.env.MapPropertySource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class RenderDatabaseConfig implements EnvironmentPostProcessor {
 
@@ -15,12 +17,22 @@ public class RenderDatabaseConfig implements EnvironmentPostProcessor {
         String databaseUrl = environment.getProperty("DATABASE_URL");
         
         if (databaseUrl != null && databaseUrl.startsWith("postgresql://")) {
-            Map<String, Object> properties = new HashMap<>();
-            String jdbcUrl = "jdbc:" + databaseUrl;
-            properties.put("spring.datasource.url", jdbcUrl);
-            
-            MapPropertySource propertySource = new MapPropertySource("render-db-config", properties);
-            environment.getPropertySources().addFirst(propertySource);
+            try {
+                URI dbUri = new URI(databaseUrl);
+                String host = dbUri.getHost();
+                int port = dbUri.getPort() == -1 ? 5432 : dbUri.getPort();
+                String path = dbUri.getPath();
+                
+                String jdbcUrl = String.format("jdbc:postgresql://%s:%d%s", host, port, path);
+                
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("spring.datasource.url", jdbcUrl);
+                
+                MapPropertySource propertySource = new MapPropertySource("render-db-config", properties);
+                environment.getPropertySources().addFirst(propertySource);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException("Invalid DATABASE_URL", e);
+            }
         }
     }
 }
