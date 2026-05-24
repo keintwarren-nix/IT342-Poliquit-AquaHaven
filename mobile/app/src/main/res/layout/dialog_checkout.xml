@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:text="SHIPPING ADDRESS"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:textColor="#444444"
+        android:letterSpacing="0.1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"/>
+
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your full address"
+        android:minLines="2"
+        android:inputType="textMultiLine"
+        android:background="@drawable/input_outline"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:text="PAYMENT METHOD"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:textColor="#444444"
+        android:letterSpacing="0.1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgPayment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbCod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💵 Cash on Delivery"
+            android:textSize="14sp"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbGcash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📱 GCash"
+            android:textSize="14sp"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:text="ORDER NOTES (optional)"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:textColor="#444444"
+        android:letterSpacing="0.1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"/>
+
+    <EditText
+        android:id="@+id/etNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Any special instructions..."
+        android:minLines="2"
+        android:inputType="textMultiLine"
+        android:background="@drawable/input_outline"
+        android:padding="10dp"
+        android:textSize="14sp"/>
+
+</LinearLayout>

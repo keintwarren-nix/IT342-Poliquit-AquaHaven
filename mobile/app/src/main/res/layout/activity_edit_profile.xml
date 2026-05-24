@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#006064"
+            app:title="Edit Profile"
+            app:titleTextColor="#FFFFFF"
+            app:navigationIcon="@android:drawable/ic_menu_revert"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center"
+            android:paddingTop="24dp" android:paddingBottom="16dp" android:background="#FFFFFF">
+
+            <FrameLayout android:layout_width="90dp" android:layout_height="90dp" android:layout_marginBottom="8dp">
+
+                <TextView android:id="@+id/tvAvatar"
+                    android:layout_width="90dp" android:layout_height="90dp"
+                    android:gravity="center" android:textSize="30sp" android:textStyle="bold"
+                    android:textColor="#006064" android:background="@drawable/avatar_circle"/>
+
+                <ImageView android:id="@+id/ivAvatar"
+                    android:layout_width="90dp" android:layout_height="90dp"
+                    android:scaleType="centerCrop" android:background="@drawable/avatar_circle"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+            <Button android:id="@+id/btnPickPhoto"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:text="Change Photo" android:textSize="12sp"
+                android:textColor="#006064" android:backgroundTint="#E0F2F1"
+                android:insetTop="0dp" android:insetBottom="0dp"/>
+
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="8dp" android:background="#F8F9FA"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="20dp" android:background="#FFFFFF">
+
+            <TextView android:text="PHONE NUMBER" android:textSize="10sp" android:textStyle="bold"
+                android:textColor="#777777" android:letterSpacing="0.1"
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="6dp"/>
+            <EditText android:id="@+id/etPhone"
+                android:layout_width="match_parent" android:layout_height="48dp"
+                android:background="@drawable/input_outline" android:inputType="phone"
+                android:paddingStart="14dp" android:paddingEnd="14dp"
+                android:textSize="14sp" android:layout_marginBottom="20dp"/>
+
+            <TextView android:text="LOCATION" android:textSize="10sp" android:textStyle="bold"
+                android:textColor="#777777" android:letterSpacing="0.1"
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="6dp"/>
+            <EditText android:id="@+id/etLocation"
+                android:layout_width="match_parent" android:layout_height="48dp"
+                android:background="@drawable/input_outline" android:hint="City, Country"
+                android:paddingStart="14dp" android:paddingEnd="14dp"
+                android:textSize="14sp" android:layout_marginBottom="20dp"/>
+
+            <TextView android:text="BIO" android:textSize="10sp" android:textStyle="bold"
+                android:textColor="#777777" android:letterSpacing="0.1"
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="6dp"/>
+            <EditText android:id="@+id/etBio"
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:background="@drawable/input_outline"
+                android:hint="Tell us about yourself..."
+                android:gravity="top" android:paddingStart="14dp" android:paddingEnd="14dp"
+                android:paddingTop="10dp" android:inputType="textMultiLine"
+                android:textSize="14sp" android:layout_marginBottom="28dp"/>
+
+            <Button android:id="@+id/btnSave"
+                android:layout_width="match_parent" android:layout_height="50dp"
+                android:text="Save Changes" android:textSize="15sp" android:textStyle="bold"
+                android:textColor="#FFFFFF" android:backgroundTint="#006064"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

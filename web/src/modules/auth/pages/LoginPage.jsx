@@ -35,7 +35,11 @@ export default function LoginPage() {
       const res = await loginUser({ email: form.email, password: form.password });
       if (res.success && res.data) {
         login(res.data.user, res.data.accessToken, res.data.refreshToken);
-        navigate("/");
+        if (res.data.user.role === "ADMIN") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       } else {
         setError(res.error?.message || "Invalid email or password.");
       }

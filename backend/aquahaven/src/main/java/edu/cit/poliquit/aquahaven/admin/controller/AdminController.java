@@ -44,7 +44,7 @@ public class AdminController {
             @RequestParam(defaultValue = "20") int size) {
 
         Page<ProductResponse> result = productRepository
-                .findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt")))
+                .findAllWithCategory(PageRequest.of(page, size))
                 .map(ProductResponse::from);
         return ApiResponse.ok(result);
     }
@@ -125,18 +125,18 @@ public class AdminController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false)    String status) {
 
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        PageRequest pageable = PageRequest.of(page, size);
 
         Page<AdminOrderResponse> result;
         if (status != null && !status.isBlank()) {
             try {
                 Order.Status s = Order.Status.valueOf(status.toUpperCase());
-                result = orderRepository.findByStatus(s, pageable).map(AdminOrderResponse::from);
+                result = orderRepository.findByStatusWithItemsAndUser(s, pageable).map(AdminOrderResponse::from);
             } catch (IllegalArgumentException e) {
                 return ApiResponse.fail("ADMIN-005", "Invalid status: " + status);
             }
         } else {
-            result = orderRepository.findAll(pageable).map(AdminOrderResponse::from);
+            result = orderRepository.findAllWithItemsAndUser(pageable).map(AdminOrderResponse::from);
         }
 
         return ApiResponse.ok(result);
@@ -209,7 +209,7 @@ public class AdminController {
         if (!role.equals("ADMIN") && !role.equals("CUSTOMER"))
             return ApiResponse.fail("ADMIN-006", "Role must be ADMIN or CUSTOMER");
 
-        user.setRole(role);
+        user.setRole("ROLE_" + role);
         User saved = userRepository.save(user);
         return ApiResponse.ok(AdminUserResponse.from(saved));
     }

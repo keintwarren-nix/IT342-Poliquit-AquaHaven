@@ -3,16 +3,19 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./modules/auth/context/AuthContext";
 import { CartProvider } from "./modules/cart/context/CartContext";
 
-import HomePage          from "./pages/HomePage";
-import AboutPage         from "./pages/AboutPage";
-import LoginPage         from "./modules/auth/pages/LoginPage";
-import RegisterPage      from "./modules/auth/pages/RegisterPage";
-import ProductsPage      from "./modules/catalog/pages/ProductsPage";
-import ProductDetailPage from "./modules/catalog/pages/ProductDetailPage";
-import CartPage          from "./modules/cart/pages/CartPage";
-import CheckoutPage      from "./modules/orders/pages/CheckoutPage";
-import OrdersPage        from "./modules/orders/pages/OrdersPage";
-import OrderDetailPage   from "./modules/orders/pages/OrderDetailPage";
+import HomePage             from "./pages/HomePage";
+import AboutPage            from "./pages/AboutPage";
+import ContactPage          from "./pages/ContactPage";
+import LoginPage            from "./modules/auth/pages/LoginPage";
+import RegisterPage         from "./modules/auth/pages/RegisterPage";
+import ProfilePage          from "./modules/auth/pages/ProfilePage";
+import ProductsPage         from "./modules/catalog/pages/ProductsPage";
+import ProductDetailPage    from "./modules/catalog/pages/ProductDetailPage";
+import CartPage             from "./modules/cart/pages/CartPage";
+import CheckoutPage         from "./modules/orders/pages/CheckoutPage";
+import OrdersPage           from "./modules/orders/pages/OrdersPage";
+import OrderDetailPage      from "./modules/orders/pages/OrderDetailPage";
+import OrderConfirmationPage from "./modules/orders/pages/OrderConfirmationPage";
 
 // ── Admin ──────────────────────────────────────────────────────────────────
 import AdminLoginPage    from "./modules/admin/pages/AdminLoginPage";
@@ -45,6 +48,7 @@ function AppRoutes() {
       {/* ── Public ── */}
       <Route path="/"             element={<HomePage />} />
       <Route path="/about"        element={<AboutPage />} />
+      <Route path="/contact"      element={<ContactPage />} />
       <Route path="/products"     element={<ProductsPage />} />
       <Route path="/products/:id" element={<ProductDetailPage />} />
 
@@ -53,10 +57,12 @@ function AppRoutes() {
       <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
 
       {/* ── Customer protected ── */}
-      <Route path="/cart"        element={<PrivateRoute><CartPage /></PrivateRoute>} />
-      <Route path="/checkout"    element={<PrivateRoute><CheckoutPage /></PrivateRoute>} />
-      <Route path="/orders"      element={<PrivateRoute><OrdersPage /></PrivateRoute>} />
-      <Route path="/orders/:ref" element={<PrivateRoute><OrderDetailPage /></PrivateRoute>} />
+      <Route path="/profile"       element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+      <Route path="/cart"          element={<PrivateRoute><CartPage /></PrivateRoute>} />
+      <Route path="/checkout"      element={<PrivateRoute><CheckoutPage /></PrivateRoute>} />
+      <Route path="/orders"        element={<PrivateRoute><OrdersPage /></PrivateRoute>} />
+      <Route path="/orders/:ref"   element={<PrivateRoute><OrderDetailPage /></PrivateRoute>} />
+      <Route path="/order-confirmation/:ref" element={<PrivateRoute><OrderConfirmationPage /></PrivateRoute>} />
 
       {/* ── Admin ── */}
       <Route path="/admin/login"    element={<AdminLoginPage />} />

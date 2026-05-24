@@ -19,5 +19,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // ── Admin additions ───────────────────────────────────────────────────────
     Optional<Order>   findByOrderRef(String orderRef);
-    Page<Order>       findByStatus(Order.Status status, Pageable pageable);
+
+    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.items oi LEFT JOIN FETCH oi.product LEFT JOIN FETCH o.user ORDER BY o.createdAt DESC")
+    Page<Order> findAllWithItemsAndUser(Pageable pageable);
+
+    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.items oi LEFT JOIN FETCH oi.product LEFT JOIN FETCH o.user WHERE o.status = :status ORDER BY o.createdAt DESC")
+    Page<Order> findByStatusWithItemsAndUser(Order.Status status, Pageable pageable);
 }
