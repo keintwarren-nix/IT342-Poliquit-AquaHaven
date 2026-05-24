@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: aquahaven-backend
+    env: java
+    buildCommand: cd backend/aquahaven && mvn clean package -DskipTests
+    startCommand: java -jar backend/aquahaven/target/aquahaven-0.0.1-SNAPSHOT.jar
+    plan: free
+    region: singapore
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aquahaven-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+  - type: web
+    name: aquahaven-web
+    env: static
+    buildCommand: cd web && npm install && npm run build
+    staticPublishPath: web/dist
+    plan: free
+    region: singapore
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://aquahaven-backend.onrender.com
+databases:
+  - name: aquahaven-db
+    databaseName: aquahaven
+    user: aquahaven
+    plan: free
+    region: singapore

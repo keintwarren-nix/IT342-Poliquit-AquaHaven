@@ -1,20 +1,30 @@
-// vite.config.js
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import fs from 'fs'
+import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    extensions: [".jsx", ".js", ".json"],
-  },
+  plugins: [react(), {
+    name: 'copy-redirects',
+    closeBundle() {
+      const src = path.resolve(__dirname, '_redirects')
+      const dest = path.resolve(__dirname, 'dist/_redirects')
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, dest)
+      }
+    }
+  }],
   server: {
+    port: 5173,
     proxy: {
-      // Proxies /api requests to the Spring Boot backend during dev.
-      // This avoids CORS preflight issues entirely in development.
-      "/api": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-      },
-    },
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      }
+    }
   },
-});
+  build: {
+    outDir: 'dist',
+    sourcemap: false
+  }
+})
